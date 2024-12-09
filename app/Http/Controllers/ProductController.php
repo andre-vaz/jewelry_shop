@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category; 
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -17,7 +18,8 @@ class ProductController extends Controller
         // Show the form for creating a new product
         public function create()
         {
-            return view('products.create');
+            $categories = Category::all(); // Fetch all categories
+            return view('products.create', compact('categories'));
         }
     
         // Store a newly created product in storage
@@ -52,7 +54,8 @@ class ProductController extends Controller
         // Show the form for editing the specified product
         public function edit(Product $product)
         {
-            return view('products.edit', compact('product'));
+            $categories = \App\Models\Category::all();
+            return view('products.edit', compact('product', 'categories'));
         }
     
         // Update the specified product in storage
