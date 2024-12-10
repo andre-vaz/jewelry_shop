@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
 
 // Home route
 Route::get('/', function () {
@@ -30,6 +31,14 @@ Route::middleware('auth', 'verified', 'admin')->prefix('admin')->name('admin.')-
 Route::get('/dashboard', function () {
     return view('dashboard'); // Regular user's dashboard view
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Product routes
+    Route::resource('products', ProductController::class);
+
+    // Category routes
+    Route::resource('categories', CategoryController::class);
+});
 
 
 // Default Breeze authentication routes

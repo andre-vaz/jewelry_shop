@@ -22,6 +22,7 @@
                     <ul>
                         <li><a href="{{ route('admin.dashboard') }}" class="block px-4 py-2">Dashboard</a></li>
                         <li><a href="{{ route('admin.products.index') }}" class="block px-4 py-2">Products</a></li>
+                        <li><a href="{{ route('admin.categories.index') }}" class="block px-4 py-2">Categories</a></li>
                         <li><a href="{{ route('profile.edit') }}" class="block px-4 py-2">Profile</a></li>
                     </ul>
                 </nav>
