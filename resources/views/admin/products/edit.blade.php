@@ -1,10 +1,10 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('content')
     <div class="container">
         <h1>Edit Product</h1>
 
-        <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 

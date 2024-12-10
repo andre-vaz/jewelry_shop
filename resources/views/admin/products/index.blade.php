@@ -1,9 +1,9 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 @section('title', 'Products')
 @section('content')
     <div class="container">
         <h1>Products</h1>
-        <a href="{{ route('products.create') }}" class="btn btn-primary">Add New Product</a>
+        <a href="{{ route('admin.products.create') }}" class="btn btn-primary">Add New Product</a>
 
         @if(session('success'))
             <div class="alert alert-success mt-3">
@@ -39,8 +39,8 @@
                             @endif
                         </td>
                         <td>
-                            <a href="{{ route('products.edit', $product->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="d-inline">
+                            <a href="{{ route('admin.products.edit', $product->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>

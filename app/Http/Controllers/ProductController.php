@@ -12,14 +12,14 @@ class ProductController extends Controller
         public function index()
         {
             $products = Product::all();
-            return view('products.index', compact('products'));
+            return view('admin.products.index', compact('products'));
         }
     
         // Show the form for creating a new product
         public function create()
         {
             $categories = Category::all(); // Fetch all categories
-            return view('products.create', compact('categories'));
+            return view('admin.products.create', compact('categories'));
         }
     
         // Store a newly created product in storage
@@ -48,14 +48,14 @@ class ProductController extends Controller
     
             $product->save();
     
-            return redirect()->route('products.index')->with('success', 'Product added successfully!');
+            return redirect()->route('admin.products.index')->with('success', 'Product added successfully!');
         }
     
         // Show the form for editing the specified product
         public function edit(Product $product)
         {
             $categories = \App\Models\Category::all();
-            return view('products.edit', compact('product', 'categories'));
+            return view('admin.products.edit', compact('product', 'categories'));
         }
     
         // Update the specified product in storage
@@ -83,13 +83,13 @@ class ProductController extends Controller
     
             $product->save();
     
-            return redirect()->route('products.index')->with('success', 'Product updated successfully!');
+            return redirect()->route('admin.products.index')->with('success', 'Product updated successfully!');
         }
     
         // Remove the specified product from storage
         public function destroy(Product $product)
         {
             $product->delete();
-            return redirect()->route('products.index')->with('success', 'Product deleted successfully!');
+            return redirect()->route('admin.products.index')->with('success', 'Product deleted successfully!');
         }
 }
