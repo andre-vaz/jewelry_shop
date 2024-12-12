@@ -25,29 +25,38 @@ class OrderController extends Controller
  
      // Place an order (Add products to cart and place an order)
      public function store(Request $request)
-     {
-         $validated = $request->validate([
-             'product_ids' => 'required|array',
-             'product_ids.*' => 'exists:products,id',
-             'quantities' => 'required|array',
-             'quantities.*' => 'integer|min:1',
-         ]);
- 
-         // Create an order and associate products with it
-         $order = Order::create([
-             'user_id' => Auth::id(),
-             'total_price' => $this->calculateTotalPrice($validated['product_ids'], $validated['quantities']),
-             'status' => 'pending',
-         ]);
- 
-         $order->products()->attach($validated['product_ids'], ['quantity' => $validated['quantities']]);
+    {
+        $validated = $request->validate([
+            'product_ids' => 'required|array',
+            'product_ids.*' => 'exists:products,id',
+            'quantities' => 'required|array',
+            'quantities.*' => 'integer|min:1',
+            'address' => 'required|string',
+        ]);
+
+        // Create an order and associate products with it
+        $order = Order::create([
+            'user_id' => Auth::id(),
+            'total_price' => $this->calculateTotalPrice($validated['product_ids'], $validated['quantities']),
+            'status' => 'pending',
+        ]);
+
+        // Prepare product-quantity pairs for attaching
+        $productData = [];
+        foreach ($validated['product_ids'] as $index => $productId) {
+            $productData[$productId] = ['quantity' => $validated['quantities'][$index]];
+        }
+
+        // Attach products to the order with their respective quantities
+        $order->products()->attach($productData);
 
         // Clear the cart after the order is placed successfully
         session()->forget('cart');
- 
-         return redirect()->route('orders.show', $order->id)
-        ->with('success', 'Order placed successfully!');
-     }
+
+        return redirect()->route('orders.show', $order->id)
+            ->with('success', 'Order placed successfully!');
+    }
+
  
      // Update an order (e.g., update status)
      public function update(Request $request, $id)
@@ -105,4 +114,37 @@ class OrderController extends Controller
      
          return view('orders.checkout', compact('cartItems', 'totalPrice')); // Return the view inside the 'orders' folder
      }
+
+     // Place an order from the cart
+    public function placeOrder(Request $request)
+    {
+        $cart = session()->get('cart', []);
+
+        if (empty($cart)) {
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty!');
+        }
+
+        // Calculate the total price
+        $totalPrice = array_sum(array_map(function ($item) {
+            return $item['price'] * $item['quantity'];
+        }, $cart));
+
+        // Create the order
+        $order = Order::create([
+            'user_id' => Auth::id(),
+            'total_price' => $totalPrice,
+            'status' => 'pending',
+        ]);
+
+        // Attach products to the order with quantities
+        foreach ($cart as $productId => $item) {
+            $order->products()->attach($productId, ['quantity' => $item['quantity']]);
+        }
+
+        // Clear the cart session
+        session()->forget('cart');
+
+        return redirect()->route('orders.index')->with('success', 'Order placed successfully!');
+    }
+
 }

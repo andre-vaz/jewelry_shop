@@ -36,7 +36,14 @@
             </tbody>
         </table>
 
-        <a href="{{ route('products.catalog') }}" class="btn btn-primary">Continue Shopping</a>
+            <!-- Checkout Button -->
+        <div style="margin-top: 20px;">
+            <a href="{{ route('checkout') }}" class="btn btn-primary">Proceed to Checkout</a>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <a href="{{ route('products.catalog') }}" class="btn btn-primary">Continue Shopping</a>
+        </div>
     @endif
 </div>
 @endsection

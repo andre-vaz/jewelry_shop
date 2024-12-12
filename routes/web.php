@@ -72,6 +72,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/order', [OrderController::class, 'store'])->name('order.store');
 });
 
+//route for the order placement action
+Route::middleware(['auth'])->group(function () {
+    Route::post('/place-order', [OrderController::class, 'placeOrder'])->name('orders.place');
+});
+
+
 
 // Default Breeze authentication routes
 require __DIR__.'/auth.php';
