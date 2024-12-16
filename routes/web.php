@@ -77,6 +77,18 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/place-order', [OrderController::class, 'placeOrder'])->name('orders.place');
 });
 
+// Route to show order details for users
+Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+
+// Admin routes for managing orders
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/orders', [OrderController::class, 'adminIndex'])->name('orders.index');
+    Route::get('/orders/{order}', [OrderController::class, 'adminShow'])->name('orders.show');
+    Route::put('/orders/{order}', [OrderController::class, 'adminUpdate'])->name('orders.update');
+    Route::delete('/orders/{order}', [OrderController::class, 'adminDestroy'])->name('orders.destroy');
+});
+
+
 
 
 // Default Breeze authentication routes
