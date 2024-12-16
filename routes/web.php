@@ -88,6 +88,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/orders/{order}', [OrderController::class, 'adminDestroy'])->name('orders.destroy');
 });
 
+//Mark notifications as read
+Route::put('/notifications/{notification}', [NotificationController::class, 'markAsRead'])->name('markNotificationAsRead');
 
 
 

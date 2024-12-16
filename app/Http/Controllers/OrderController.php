@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Product;
+use App\Notifications\OrderStatusUpdated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -96,7 +97,7 @@ class OrderController extends Controller
         return view('admin.orders.show', compact('order'));
     }
 
-    // Admin: Update order status
+    // Admin: Update order status and send notifications
     public function adminUpdate(Request $request, $id)
     {
         $validated = $request->validate([
@@ -104,7 +105,19 @@ class OrderController extends Controller
         ]);
 
         $order = Order::findOrFail($id);
-        $order->update(['status' => $validated['status']]);
+
+        // Store the old status before updating
+        $oldStatus = $order->status;
+        $newStatus = $validated['status'];
+
+        // Update the order status
+        $order->update(['status' => $newStatus]);
+
+        // Send a notification to the user about the status update
+        // Only notify if the status actually changed
+        if ($oldStatus !== $newStatus) {
+            $order->user->notify(new OrderStatusUpdated($order, $newStatus));
+        }
 
         return redirect()->route('admin.orders.index')->with('success', 'Order status updated successfully!');
     }
