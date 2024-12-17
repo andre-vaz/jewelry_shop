@@ -28,10 +28,13 @@ class AuthenticatedSessionController extends Controller
     
         $request->session()->regenerate();
     
-        // Redirect to the intended page or fallback to the appropriate dashboard
-        return redirect()->intended(Auth::user()->isAdmin()
-            ? route('admin.dashboard')
-            : route('dashboard'));
+            // Redirect based on user role
+        if (Auth::user()->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        }
+
+        // Redirect regular users to the welcome page
+        return redirect()->route('home');
     }
 
     /**

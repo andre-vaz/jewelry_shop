@@ -6,12 +6,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
-
+use App\Http\Controllers\NotificationController; // Added for notifications
 
 // Home route
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('welcome'); // Updated to point to the new welcome.blade.php
+})->name('home');
 
 // Dashboard route (protected with 'auth' and 'verified' middlewares)
 Route::get('/admin/dashboard', function () {
@@ -26,59 +26,42 @@ Route::middleware('auth')->group(function () {
 });
 
 // Admin Product management routes (protected with 'auth','verified', and 'admin' middleware)
-Route::middleware('auth', 'verified', 'admin')->prefix('admin')->name('admin.')->group(function () {
-        Route::resource('products', ProductController::class);
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::resource('products', ProductController::class);
+    Route::resource('categories', CategoryController::class);
 });
 
 // Regular User Dashboard route (protected with 'auth' and 'verified' middlewares)
 Route::get('/dashboard', function () {
-    return view('dashboard'); // Regular user's dashboard view
+    return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
-    // Product routes
-    Route::resource('products', ProductController::class);
-
-    // Category routes
-    Route::resource('categories', CategoryController::class);
-});
-
+// Order routes for authenticated users
 Route::middleware('auth')->group(function () {
-    // Order management routes
-    Route::get('orders', [OrderController::class, 'index'])->name('orders.index'); // Show all orders
-    Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show'); // Show order details
-    Route::post('orders', [OrderController::class, 'store'])->name('orders.store'); // Place an order
-    Route::put('orders/{order}', [OrderController::class, 'update'])->name('orders.update'); // Update order status
-    Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy'); // Delete an order
+    Route::get('orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/{order}', [OrderController::class, 'show'])->name('orders.show');
+    Route::post('orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::put('orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+    Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 });
 
 // Product Catalog Route (public-facing)
 Route::get('/products', [ProductController::class, 'catalog'])->name('products.catalog');
-
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
-// Cart routes
+// Cart routes (protected with 'auth' middleware)
 Route::middleware('auth')->group(function () {
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 });
 
-//Check out route
-Route::middleware(['auth'])->group(function () {
-    // Checkout page route
+// Checkout route
+Route::middleware('auth')->group(function () {
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
-    // Order store route (to handle the POST request for placing an order)
     Route::post('/order', [OrderController::class, 'store'])->name('order.store');
-});
-
-//route for the order placement action
-Route::middleware(['auth'])->group(function () {
     Route::post('/place-order', [OrderController::class, 'placeOrder'])->name('orders.place');
 });
-
-// Route to show order details for users
-Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 
 // Admin routes for managing orders
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
@@ -88,10 +71,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/orders/{order}', [OrderController::class, 'adminDestroy'])->name('orders.destroy');
 });
 
-//Mark notifications as read
+// Mark notifications as read
 Route::put('/notifications/{notification}', [NotificationController::class, 'markAsRead'])->name('markNotificationAsRead');
-
-
 
 // Default Breeze authentication routes
 require __DIR__.'/auth.php';
