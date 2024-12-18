@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class ContactController extends Controller
 {
@@ -22,12 +24,18 @@ class ContactController extends Controller
             'message' => 'required|string|min:10',
         ]);
 
-        // Here you can handle the form data (e.g., save to DB, send email)
-        // For now, we'll just return a success message
+            // Send an email
+        try {
+            Mail::raw($validated['message'], function ($mail) use ($validated) {
+                $mail->from(config('mail.from.address'), config('mail.from.name'))
+                    ->to('s.andre.vaz@gmail.com')  // Replace with the recipient's email
+                    ->subject('New Contact Form Submission');
+            });
 
-        // Optionally, send an email (if you want to integrate it later)
-        // Mail::to(config('mail.contact_email'))->send(new ContactMessage($validated));
-
-        return back()->with('success', 'Your message has been sent!');
+            return back()->with('success', 'Your message has been sent!');
+        } catch (\Exception $e) {
+            Log::error('Mail sending error: ' . $e->getMessage());
+            return back()->with('error', 'Failed to send your message. Please try again later.');
+        }
     }
 }
