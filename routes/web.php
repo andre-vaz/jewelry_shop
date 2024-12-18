@@ -2,15 +2,16 @@
 
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\NotificationController; // Added for notifications
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ContactController; // Added for contact form handling
+use Illuminate\Support\Facades\Route;
 
 // Home route
 Route::get('/', function () {
-    return view('welcome'); // Updated to point to the new welcome.blade.php
+    return view('welcome');
 })->name('home');
 
 // Dashboard route (protected with 'auth' and 'verified' middlewares)
@@ -25,13 +26,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Admin Product management routes (protected with 'auth','verified', and 'admin' middleware)
+// Admin Product and Category management routes
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
 });
 
-// Regular User Dashboard route (protected with 'auth' and 'verified' middlewares)
+// Regular User Dashboard route
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -45,21 +46,20 @@ Route::middleware('auth')->group(function () {
     Route::delete('orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 });
 
-// Product Catalog Route (public-facing)
+// Product Catalog Routes (public-facing)
 Route::get('/products', [ProductController::class, 'catalog'])->name('products.catalog');
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
-// Cart routes (protected with 'auth' middleware)
+// Cart routes for authenticated users
 Route::middleware('auth')->group(function () {
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 });
 
-// Checkout route
+// Checkout routes
 Route::middleware('auth')->group(function () {
     Route::get('/checkout', [OrderController::class, 'checkout'])->name('checkout');
-    Route::post('/order', [OrderController::class, 'store'])->name('order.store');
     Route::post('/place-order', [OrderController::class, 'placeOrder'])->name('orders.place');
 });
 
@@ -71,8 +71,15 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/orders/{order}', [OrderController::class, 'adminDestroy'])->name('orders.destroy');
 });
 
-// Mark notifications as read
+// Notification route
 Route::put('/notifications/{notification}', [NotificationController::class, 'markAsRead'])->name('markNotificationAsRead');
+
+// Static pages
+Route::view('/about', 'about')->name('about');
+
+// Contact form routes
+Route::get('/contact', [ContactController::class, 'showForm'])->name('contact');
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 
 // Default Breeze authentication routes
 require __DIR__.'/auth.php';
