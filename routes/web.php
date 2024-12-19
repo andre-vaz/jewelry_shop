@@ -1,18 +1,18 @@
 <?php
 
+use App\Http\Controllers\HomeController;       // Added for home page handling
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\ContactController; // Added for contact form handling
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\CarouselImageController;
 
 // Home route
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home'); // Updated to use HomeController
 
 // Dashboard route (protected with 'auth' and 'verified' middlewares)
 Route::get('/admin/dashboard', function () {
@@ -80,6 +80,15 @@ Route::view('/about', 'about')->name('about');
 // Contact form routes
 Route::get('/contact', [ContactController::class, 'showForm'])->name('contact');
 Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
+
+// Routes for carousel management (Admin Only)
+Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(function () {
+    // Carousel routes for managing images
+    Route::resource('carousel', CarouselImageController::class);
+    
+    // Additional route to toggle carousel image status
+    Route::put('carousel/{carouselImage}/toggle', [CarouselImageController::class, 'toggleStatus'])->name('carousel.toggleStatus');
+});
 
 // Default Breeze authentication routes
 require __DIR__.'/auth.php';
