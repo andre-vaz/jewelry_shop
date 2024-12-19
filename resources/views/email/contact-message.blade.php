@@ -1,4 +1,4 @@
-<!-- resources/views/emails/contact-message.blade.php -->
+<!-- resources/views/email/contact-message.blade.php -->
 <h2>New Contact Form Message</h2>
 
 <p><strong>Name:</strong> {{ $data['name'] }}</p>
