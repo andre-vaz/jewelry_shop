@@ -1,5 +1,68 @@
-@import 'bootstrap/dist/css/bootstrap.min.css';
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* resources/css/app.css */
 
+/* Load Bootstrap first */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+/* Scoped Tailwind CSS */
+.tailwind-scope {
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+}
+
+/* Ensure carousel images have a consistent height on larger screens */
+#homeCarousel .carousel-item img {
+    max-height: 600px; /* Adjust the height as needed */
+    object-fit: cover; /* Ensure the image covers the area while maintaining aspect ratio */
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+/* Style for buttons to make them stand out */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.btn-outline-primary {
+    color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Reduce carousel height further on medium screens */
+@media (max-width: 992px) {
+    #homeCarousel .carousel-item img {
+        max-height: 400px;
+    }
+}
+
+/* Maintain default behavior on smaller screens */
+@media (max-width: 576px) {
+    #homeCarousel .carousel-item img {
+        max-height: 300px;
+    }
+}
