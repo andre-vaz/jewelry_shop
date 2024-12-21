@@ -53,6 +53,53 @@
     color: #fff;
 }
 
+footer {
+    margin-top: auto;
+}
+
+footer a {
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+footer a:hover {
+    color: #007bff;
+}
+
+/* Ensure footer sticks to the bottom */
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+/* Styling for the copyright section */
+footer .bg-secondary {
+    font-size: 0.9rem;
+}
+
+/* Ensure sections align side by side on larger screens */
+footer .row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+/* Align sections properly on smaller screens */
+footer .col-lg-6 {
+    flex: 1;
+    max-width: 100%;
+    text-align: center;
+}
+
+
 /* Reduce carousel height further on medium screens */
 @media (max-width: 992px) {
     #homeCarousel .carousel-item img {

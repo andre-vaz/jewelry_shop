@@ -27,11 +27,41 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-light py-4 mt-5">
-        <div class="container text-center">
-            <p>&copy; {{ date('Y') }} My Laravel App. All rights reserved.</p>
+    <footer class="bg-light text-center text-lg-start">
+    <div class="container py-4">
+        <div class="row">
+            <!-- Quick Links -->
+            <div class="col-lg-6 col-md-6 mb-4">
+                <h5>Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="{{ url('/') }}" class="text-muted">Home</a></li>
+                    <li><a href="{{ route('products.catalog') }}" class="text-muted">Products</a></li>
+                    <li><a href="{{ route('about') }}" class="text-muted">About Us</a></li>
+                    <li><a href="{{ route('contact') }}" class="text-muted">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="col-lg-6 col-md-6 mb-4">
+                <h5>Contact Us</h5>
+                <p class="text-muted">
+                    Email: support@ourstore.com<br>
+                    Phone: +123-456-7890<br>
+                    Address: 123 Store Street, City, Country
+                </p>
+                <div>
+                    <a href="#" class="text-muted me-2"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-muted me-2"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-muted me-2"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
         </div>
-    </footer>
+    </div>
+    <div class="text-center py-2 bg-secondary text-white">
+        &copy; {{ date('Y') }} Our Store. All rights reserved.
+    </div>
+</footer>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
