@@ -94,11 +94,21 @@ class ProductController extends Controller
         }
 
         //Catalog method
-        public function catalog()
+        public function catalog(Request $request)
         {
-            $products = Product::all();
+            $query = Product::query();
+        
+            // If there's a search term, filter the results
+            if ($request->has('search') && $request->search != '') {
+                $query->where('name', 'LIKE', '%' . $request->search . '%')
+                      ->orWhere('description', 'LIKE', '%' . $request->search . '%');
+            }
+        
+            $products = $query->paginate(12); // Paginate results (adjust per preference)
+        
             return view('products.catalog', compact('products'));
         }
+        
 
         //Show method
         public function show(Product $product)

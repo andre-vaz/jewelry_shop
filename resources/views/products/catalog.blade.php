@@ -1,10 +1,17 @@
 @extends(auth()->check() ? 'layouts.app' : 'layouts.guest')
 
 @section('content')
+
 <div class="container container-lg mt-5">
     <h1 class="mb-4">Product Catalog</h1>
+
+    <!-- Show Search Term Feedback -->
+    @if(request('search'))
+        <p class="text-muted">Search results for: <strong>"{{ request('search') }}"</strong></p>
+    @endif
+
     <div class="row">
-        @foreach($products as $product)
+        @forelse($products as $product)
             <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
                 <div class="card h-100 shadow-sm">
                     <img src="{{ asset('storage/' . $product->image) }}" class="card-img-top" alt="{{ $product->name }}">
@@ -19,7 +26,16 @@
                     </div>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <div class="col-12">
+                <p class="text-muted">No products found.</p>
+            </div>
+        @endforelse
+    </div>
+
+    <!-- Pagination Links -->
+    <div class="mt-4">
+        {{ $products->links() }}
     </div>
 </div>
 @endsection

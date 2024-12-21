@@ -6,9 +6,9 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <div class="collapse navbar-collapse" id="navbarNav">
             <!-- Primary Navigation Links -->
-            <ul class="navbar-nav">
+            <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/') }}">Home</a>
                 </li>
@@ -22,11 +22,24 @@
                     <a class="nav-link" href="{{ route('contact') }}">Contact</a>
                 </li>
             </ul>
-        </div>
 
-        <!-- Secondary Navigation Links (Login, Register, Cart) -->
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul class="navbar-nav">
+            <!-- Search Bar and Secondary Links -->
+            <ul class="navbar-nav align-items-center">
+                <!-- Search Icon -->
+                <li class="nav-item">
+                    <a id="searchToggle" class="nav-link" href="#">
+                        <i class="fas fa-search"></i>
+                    </a>
+                </li>
+
+                <!-- Search Form -->
+                <form id="searchForm" action="{{ route('products.catalog') }}" method="GET" class="d-none">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search products...">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </form>
+
                 <!-- Cart Icon -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('cart.index') }}">
@@ -64,3 +77,19 @@
         </div>
     </div>
 </nav>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const searchToggle = document.getElementById('searchToggle');
+    const searchForm = document.getElementById('searchForm');
+
+    if (searchToggle && searchForm) {
+        searchToggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            searchForm.classList.toggle('d-none');
+            console.log("Inline script: Search form toggled");
+        });
+    }
+});
+</script>
+

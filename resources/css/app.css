@@ -99,6 +99,42 @@ footer .col-lg-6 {
     text-align: center;
 }
 
+.nav-search #searchForm {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Navbar adjustments */
+.navbar-nav .nav-item {
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .navbar-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .navbar-nav .nav-item {
+        margin-bottom: 10px;
+    }
+}
+
+.navbar-nav .nav-link {
+    padding: 8px 15px;
+}
+
+/* Search form transition */
+#searchForm {
+    transition: all 0.3s ease-in-out;
+}
+
+/* Ensure proper spacing for secondary links */
+.navbar-nav:last-child .nav-item {
+    margin-left: 10px;
+}
+
+
+
 
 /* Reduce carousel height further on medium screens */
 @media (max-width: 992px) {
