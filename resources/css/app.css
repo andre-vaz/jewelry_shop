@@ -66,3 +66,37 @@
         max-height: 300px;
     }
 }
+
+/* Center primary links and push secondary links to the right on larger screens */
+@media (min-width: 992px) {
+    .navbar-nav {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+
+    .navbar-nav:first-child {
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .navbar-nav:last-child {
+        margin-left: auto;
+    }
+
+    .navbar-collapse {
+        flex-basis: auto;
+    }
+}
+
+/* Ensure icons (like the cart) have a consistent size and spacing */
+.nav-link i {
+    font-size: 1.2rem;
+    margin-right: 4px;
+}
+
+/* Add spacing between secondary links */
+.navbar-nav:last-child .nav-item {
+    margin-left: 10px;
+}
+

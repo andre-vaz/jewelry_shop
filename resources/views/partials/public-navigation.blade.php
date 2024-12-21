@@ -5,36 +5,36 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <!-- Home link -->
+
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <!-- Primary Navigation Links -->
+            <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/') }}">Home</a>
                 </li>
-
-                <!-- Products (Catalog) link -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('products.catalog') }}">Products</a>
                 </li>
-
-                <!-- About Us link -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('about') }}">About Us</a>
                 </li>
-
-                <!-- Contact Us link -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('contact') }}">Contact</a>
                 </li>
+            </ul>
+        </div>
 
-                <!-- Cart icon -->
+        <!-- Secondary Navigation Links (Login, Register, Cart) -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <!-- Cart Icon -->
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('cart.index') }}">
                         <i class="fas fa-shopping-cart"></i> Cart
                     </a>
                 </li>
 
-                <!-- Auth links -->
+                <!-- Auth Links -->
                 @if (Route::has('login'))
                     @auth
                         <li class="nav-item">
